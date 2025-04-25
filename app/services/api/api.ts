@@ -16,6 +16,7 @@ import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 export const DEFAULT_API_CONFIG: ApiConfig = {
   url: Config.API_URL,
   timeout: 10000,
+  weatherApiKey: Config.OPEN_WEATHER_MAP_API_KEY,
 }
 
 /**
@@ -45,7 +46,7 @@ export class Api {
     const response: ApiResponse<WeatherResponse> = await this.apisauce.get(`${this.config.url}`, {
       q: cityName,
       units: Units.metric,
-      appid: Config.OPEN_WEATHER_MAP_API_KEY,
+      appid: this.config.weatherApiKey,
     })
 
     if (!response.ok) {

@@ -9,12 +9,19 @@ const en = {
     buttonLabel: "Search",
     inputPlaceholder: "Type a city name...",
     errorMessage: "Error occured",
+    notFoundMessage: "Weather data not found",
+    unAuthorizedMessage: "You are unauthorized to fetch this data",
+    cannotConnectError: "We can't connect to the server",
   },
   welcomeScreen: {
     postscript:
       "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
     readyForLaunch: "Your app, almost ready for launch!",
     exciting: "(ohh, this is exciting!)",
+  },
+  weatherScreen: {
+    max: "Max",
+    min: "Min",
   },
   errorScreen: {
     title: "Something went wrong!",

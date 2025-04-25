@@ -6,12 +6,12 @@
  */
 import { NavigationContainer } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
-import { observer } from "mobx-react-lite"
 import * as Screens from "@/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { useAppTheme, useThemeProvider } from "@/utils/useAppTheme"
-import { ComponentProps } from "react"
+import { ComponentProps, createContext, Dispatch, SetStateAction, useState } from "react"
+import { WeatherResponse } from "../services/api"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -48,7 +48,7 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 // Documentation: https://reactnavigation.org/docs/stack-navigator/
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
-const AppStack = observer(function AppStack() {
+const AppStack = function AppStack() {
   const {
     theme: { colors },
   } = useAppTheme()
@@ -67,22 +67,42 @@ const AppStack = observer(function AppStack() {
       <Stack.Screen name="Weather" component={Screens.WeatherScreen} />
     </Stack.Navigator>
   )
-})
+}
 
 export interface NavigationProps
   extends Partial<ComponentProps<typeof NavigationContainer<AppStackParamList>>> {}
 
-export const AppNavigator = observer(function AppNavigator(props: NavigationProps) {
+export type WeatherContextType = {
+  weatherData: WeatherResponse | undefined
+  loading: boolean
+  setWeatherData: Dispatch<SetStateAction<WeatherResponse | undefined>>
+  setLoading: Dispatch<SetStateAction<boolean>>
+}
+
+const weatherContextDefaultValue: WeatherContextType = {
+  weatherData: undefined,
+  loading: false,
+  setWeatherData: () => {},
+  setLoading: () => {},
+}
+
+export const WeatherContext = createContext<WeatherContextType>(weatherContextDefaultValue)
+
+export const AppNavigator = function AppNavigator(props: NavigationProps) {
   const { themeScheme, navigationTheme, setThemeContextOverride, ThemeProvider } =
     useThemeProvider()
+  const [weatherData, setWeatherData] = useState<WeatherResponse | undefined>()
+  const [loading, setLoading] = useState<boolean>(false)
 
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName))
 
   return (
     <ThemeProvider value={{ themeScheme, setThemeContextOverride }}>
-      <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
-        <AppStack />
-      </NavigationContainer>
+      <WeatherContext.Provider value={{ weatherData, setWeatherData, loading, setLoading }}>
+        <NavigationContainer ref={navigationRef} theme={navigationTheme} {...props}>
+          <AppStack />
+        </NavigationContainer>
+      </WeatherContext.Provider>
     </ThemeProvider>
   )
-})
+}

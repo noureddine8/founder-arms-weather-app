@@ -11,6 +11,13 @@ const ar: Translations = {
     buttonLabel: "Search",
     inputPlaceholder: "Type a city name...",
     errorMessage: "Error occured",
+    notFoundMessage: "Weather data not found",
+    unAuthorizedMessage: "You are unauthorized to fetch this data",
+    cannotConnectError: "We can't connect to the server",
+  },
+  weatherScreen: {
+    max: "Max",
+    min: "Min",
   },
   welcomeScreen: {
     postscript:

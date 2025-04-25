@@ -40,10 +40,10 @@ interface Coordinates {
 }
 
 interface Weather {
-  id: string
-  main: number
-  description: number
-  icon: number
+  id: number
+  main: string
+  description: string
+  icon: string
 }
 
 interface Wind {
@@ -55,6 +55,7 @@ interface Main {
   temp: number
   feels_like: number
   temp_min: number
+  temp_max: number
   pressure: number
   humidity: number
   sea_level: number
@@ -65,6 +66,8 @@ export interface WeatherResponse {
   coord: Coordinates
   weather: [Weather]
   main: Main
+  wind: Wind
+  name: string
 }
 export enum Units {
   metric = "metric",
@@ -83,4 +86,5 @@ export interface ApiConfig {
    * Milliseconds before we timeout the request.
    */
   timeout: number
+  weatherApiKey: string | undefined
 }
