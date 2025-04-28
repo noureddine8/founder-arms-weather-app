@@ -55,6 +55,7 @@ const AppStack = function AppStack() {
 
   return (
     <Stack.Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: true,
         navigationBarColor: colors.background,
